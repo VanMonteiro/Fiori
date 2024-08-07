@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:Reference Uri="./sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='ECC_BACKEND')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZHCM_ODATA_SPFLI_CDS_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="ZHCM_SCARRType" sap:label="Airline" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Carrid"/>
+                </Key>
+                <Property Name="Carrid" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Airline"/>
+                <Property Name="Carrname" Type="Edm.String" MaxLength="20" sap:label="Airline"/>
+                <Property Name="Currcode" Type="Edm.String" MaxLength="5" sap:label="Airline Currency" sap:semantics="currency-code"/>
+                <Property Name="Url" Type="Edm.String" MaxLength="255" sap:label="URL"/>
+                <NavigationProperty Name="to_item" Relationship="ZHCM_ODATA_SPFLI_CDS_SRV.assoc_E7893D17E8DB083F4AF3B14803AB1EEA" FromRole="FromRole_assoc_E7893D17E8DB083F4AF3B14803AB1EEA" ToRole="ToRole_assoc_E7893D17E8DB083F4AF3B14803AB1EEA"/>
+            </EntityType>
+            <EntityType Name="ZHCM_SPFLIType" sap:label="Fligh Schedule" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Carrid"/>
+                    <PropertyRef Name="Connid"/>
+                </Key>
+                <Property Name="Countryto" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Country Key"/>
+                <Property Name="Cityto" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Arrival city"/>
+                <Property Name="Airpto" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Destination airport"/>
+                <Property Name="Fltime" Type="Edm.Int32"/>
+                <Property Name="Deptime" Type="Edm.Time" Precision="0" sap:label="Departure time"/>
+                <Property Name="Arrtime" Type="Edm.Time" Precision="0" sap:label="Arrival Time"/>
+                <Property Name="Distance" Type="Edm.Decimal" Precision="9" Scale="4" sap:unit="Distid" sap:label="Distance"/>
+                <Property Name="Distid" Type="Edm.String" MaxLength="3" sap:label="Distance in" sap:semantics="unit-of-measure"/>
+                <Property Name="Fltype" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Charter flt"/>
+                <Property Name="Period" Type="Edm.Byte" sap:label="n day(s) later"/>
+                <Property Name="Carrid" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Airline"/>
+                <Property Name="Connid" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="NonNegative" sap:label="Connection Number"/>
+                <Property Name="Countryfr" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Country Key"/>
+                <Property Name="Cityfrom" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Depart. city"/>
+                <Property Name="Airpfrom" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Departure airport"/>
+            </EntityType>
+            <Association Name="assoc_E7893D17E8DB083F4AF3B14803AB1EEA" sap:content-version="1">
+                <End Type="ZHCM_ODATA_SPFLI_CDS_SRV.ZHCM_SCARRType" Multiplicity="1" Role="FromRole_assoc_E7893D17E8DB083F4AF3B14803AB1EEA"/>
+                <End Type="ZHCM_ODATA_SPFLI_CDS_SRV.ZHCM_SPFLIType" Multiplicity="*" Role="ToRole_assoc_E7893D17E8DB083F4AF3B14803AB1EEA"/>
+            </Association>
+            <EntityContainer Name="ZHCM_ODATA_SPFLI_CDS_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="ZHCM_SCARR" EntityType="ZHCM_ODATA_SPFLI_CDS_SRV.ZHCM_SCARRType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <EntitySet Name="ZHCM_SPFLI" EntityType="ZHCM_ODATA_SPFLI_CDS_SRV.ZHCM_SPFLIType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <AssociationSet Name="assoc_E7893D17E8DB083F4AF3B14803AB1EEA" Association="ZHCM_ODATA_SPFLI_CDS_SRV.assoc_E7893D17E8DB083F4AF3B14803AB1EEA" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZHCM_SCARR" Role="FromRole_assoc_E7893D17E8DB083F4AF3B14803AB1EEA"/>
+                    <End EntitySet="ZHCM_SPFLI" Role="ToRole_assoc_E7893D17E8DB083F4AF3B14803AB1EEA"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link rel="self" href="https://dsosapfid01.ocps.k12.fl.us:8000/sap/opu/odata/sap/ZHCM_ODATA_SPFLI_CDS_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="https://dsosapfid01.ocps.k12.fl.us:8000/sap/opu/odata/sap/ZHCM_ODATA_SPFLI_CDS_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
